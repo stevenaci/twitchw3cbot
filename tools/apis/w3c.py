@@ -1,6 +1,6 @@
 import requests as re
 
-class Api():
+class W3CApi():
     base_url= "https://statistic-service.w3champions.com/api/"
     
     realm_map = {
@@ -15,8 +15,7 @@ class Api():
         0:"Rd"
     }
     def get_json(url: str):
-        res = re.get(
-            Api.base_url + url)
+        res = re.get(W3CApi.base_url + url)
         try:
             res = res.json()
             return res
@@ -32,20 +31,17 @@ class Player():
         self.url_name = self.name + "%23" + self.id
         return
 
-    def get_match(self):
+    def get_current_match(self):
         endpoint = "matches/ongoing/"
-        return Api.get_json(
-            endpoint + self.url_name
-        )
+        return W3CApi.get_json(endpoint + self.url_name)
 
     def get_stats(self):
         endpoint = "players/"
-        return Api.get_json(
+        return W3CApi.get_json(
             endpoint + self.url_name) # idk
 
 player = Player("ToD", 2792)
 
-#result = Dict(fish.get_cur_match().content)
 """
 {'map': 'amazonia', 'id': '5f40632b4521d79a2975cd8d', 'durationInSeconds': 0,
 'startTime': '2020-08-22T00:13:04.235+00:00', 'endTime': '0001-01-01T00:00:00+00:00',
@@ -58,7 +54,6 @@ https://statistic-service.w3champions.com/api/players/Minigun%2311620/winrate?se
 """
 data = player.get_cur_match()
 if data:
-    #print(data)
     i = 0
     for team in data["teams"]:
         i+=1
@@ -66,9 +61,6 @@ if data:
         for player in team["players"]:
             #print(player)
             print(player["name"], race_map[player["race"]], player['oldMmr'])
-    # print(data["map"])
-    # print(data["teams"][0]["players"][0]["name"])
-    # print(race_map[data["teams"][0]["players"][0]["race"]])
 
 
 def get_elapsed(start_timestamp):
