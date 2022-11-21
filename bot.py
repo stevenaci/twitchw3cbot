@@ -2,21 +2,20 @@ import twitchio
 from twitchio.ext import commands, pubsub
 from cogs.movies import MoviesCog
 from cogs.warcraft import WarcraftCog
-import configparser
+from tools.config import config
 
-class myBot(commands.Bot, twitchio.Client):
+class TwitchBot(commands.Bot, twitchio.Client):
 
 
     def __init__(self):
-        config = configparser.ConfigParser()
-        config.read('twitch.ini')
 
         super().__init__(
             token= config['tokens']['access_token'],
             prefix='?',
-            initial_channels=[config['config']['channels']]
+            initial_channels=[c[0] for c in config['w3c']['channels']]
         )
-        self.add_cog(MoviesCog(self))
+        self.add_cog(WarcraftCog())
+        #self.add_cog(MoviesCog(self))
 
     async def event_ready(self):
         # Notify us when everything is ready!
@@ -26,5 +25,5 @@ class myBot(commands.Bot, twitchio.Client):
     async def event_join(self, *args):
         print(f"Joined server{args}")
 
-bot = myBot()
+bot = TwitchBot()
 bot.run()

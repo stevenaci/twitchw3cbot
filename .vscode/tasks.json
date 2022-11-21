@@ -1,0 +1,8 @@
+{
+    "tasks": [{
+        "taskName": "pipinstall",
+        "command": "pip",
+        "args": ["install","-r","requirements.txt"],
+        "isShellCommand": true
+    }]
+}

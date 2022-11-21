@@ -1,22 +1,34 @@
+from tools.apis.w3c.player import Player, Players
 from twitchio.ext import commands
+
+from tools.config import config
 
 class WarcraftCog(commands.Cog):
 
-    def __init__(self, bot: commands.Bot):
-        self.bot = bot
+    players: dict[str, Player]
 
-    @commands.Cog.event()
-    async def event_message(self, message):
-        # An event inside a cog!
-        if message.echo:
-            return
+    def __init__(self):
+        self.players = {}
+        for chan, btag in config['w3c']['channels']:
+            self.players[chan] = Player(btag)
 
-        print(message.content)
     @commands.command()
-    async def whatever(self, ctx):
-        channel = self.bot.get_channel(8675309) #whatever your channel id is
-        await channel.send("whatever")
+    async def game(self, ctx: commands.Context):
+        # look up stats based on channel
+        if self.players.get(self.players[ctx.channel.name]):
+            await ctx.channel.send(self.players[ctx.channel.name].get_current_match())
 
-def prepare(bot: commands.Bot):
-    # Load our cog with this module...
-    bot.add_cog(WarcraftCog(bot))
+    @commands.command()
+    async def join(self, ctx: commands.Context):
+        if ctx.channel.name == 2:
+            player = Player(ctx.message.content.split("#")[0:2]) # to do split # and name
+            stats = Player.get_stats()
+            if player.get_stats(): # check if they used a valid battle tag
+                self.players[ctx.message.author] = player
+                ctx.channel.send(f"That's {stats.battleTag()} ?")
+            else:
+                ctx.channel.send("Couldn't find that player on w3c")
+
+    @commands.command()
+    async def status(self, ctx: commands.Context):
+        await ctx.channel.send(f"{self.players[ctx.channel.name]}")
