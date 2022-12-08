@@ -1,8 +1,10 @@
 
 from configparser import ConfigParser
 
+from tools.singleton import Singleton
 
-class Config(ConfigParser):
-    def __init__(self):        
+
+class Config(ConfigParser, Singleton):
+    def __init__(self):
+        super().__init__()
         self.read('twitch.ini')
-    

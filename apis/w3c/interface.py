@@ -61,4 +61,3 @@ class Match(BaseModel):
     teams: list[MatchTeam]
     gateWay: int
     season: int
-
