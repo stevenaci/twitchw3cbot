@@ -13,7 +13,8 @@ class TwitchBot(commands.Bot, twitchio.Client):
             prefix='?',
             initial_channels=[Config()['w3c']['server_channel']]
         )
-        self.add_cog(WarcraftCog(self, Config()['w3c']['server_channel']))
+        self.add_cog(WarcraftCog(bot=self, server_channel=Config()['w3c']['server_channel']))
+        self.run()
 
     async def event_ready(self):
         # Notify us when everything is ready!
@@ -23,6 +24,6 @@ class TwitchBot(commands.Bot, twitchio.Client):
     async def event_join(self, *args):
         print(f"Joined server{args}")
         await self.connected_channels[0].send("online")
-
-bot = TwitchBot()
-bot.run()
+if __name__ == '__main__':
+    bot = TwitchBot()
+    bot.run()

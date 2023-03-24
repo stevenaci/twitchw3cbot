@@ -7,3 +7,6 @@ def test_bot() -> TwitchBot:
 
 def test_register_user(test_bot: TwitchBot):
     test_bot.get_channel('')
+    test_bot.connected_channels[0].send("?join ")
+    assert True
+
