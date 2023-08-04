@@ -70,10 +70,10 @@ class Match(BaseModel):
     season: int
 
     @property
-    def game_mode_str(self):
+    def game_mode(self):
         return gamemode_map.get(self.gameMode)
 
-    def get_oppos(self, battletag: str):
+    def opponents(self, battletag: str):
         # gets the next team which doesn't h ave this player on it.
         # to do, collect all teams for ffa games, etc.
         oppo_team = next(
@@ -85,9 +85,9 @@ class Match(BaseModel):
         return [p for p in oppo_team.players] if oppo_team else []
 
     def describe(self, user_bt: str):
-        oppos = self.get_oppos(user_bt)
+        oppos = self.opponents(user_bt)
         return (
             f"Map: {self.map} Time elapsed: {(self.startTime.replace(tzinfo=None) - datetime.now()).seconds} seconds",
             f"Oppo: { ', '.join(p.battleTag for p in oppos) }",
-            f"Game M0de: {self.game_mode_str}"
+            f"Game M0de: {self.game_mode}"
         )

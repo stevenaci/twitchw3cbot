@@ -1,12 +1,8 @@
 from cogs.helpers import send_message
-
-
 from twitchio.ext import commands
-
 from w3c.player import Player
 
 class Players(dict):
-
     def __init__(self, **config):
         self.load_players()
 
@@ -36,14 +32,14 @@ class Players(dict):
             print(f"No player registered for this channel: {ctx.channel.name}")
 
     def load_players(self):
-
-        with open('players.save', 'r') as f:            
+        with open("players.save", "r") as f:
             for p in f.readlines():
                 twitch_channel, bnet_id = p.split(":")
                 self[twitch_channel] = Player(twitch_channel, bnet_id)
 
     def save(self):
-        with open('players.save', 'w') as f:
+        with open("players.save", "w") as f:
             f.writelines([f"{k}:{v.bnet}" for k, v in self.items()])
+
 
 players = Players()
