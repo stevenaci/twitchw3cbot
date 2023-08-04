@@ -1,7 +1,6 @@
 from datetime import datetime
 from typing import Optional
 from pydantic import BaseModel
-
 """
 {'map': 'amazonia', 'id': '5f40632b4521d79a2975cd8d', 'durationInSeconds': 0,
 'startTime': '2020-08-22T00:13:04.235+00:00', 'endTime': '0001-01-01T00:00:00+00:00',
@@ -14,7 +13,15 @@ from pydantic import BaseModel
 'gateWay': 10, 'season': 0}
 https://statistic-service.w3champions.com/api/players/Minigun%2311620/winrate?season=2
 """
-
+gateway_map = {10:'America', 20: 'Europe'}
+gamemode_map = {1: '1v1', 2:'2v2', 3:'3v3', 4:'4v4'}
+race_map = {
+    1:"Hu",
+    2:"Or",
+    8:"Ud",
+    4:"Ne",
+    0:"Rd"
+}
 class WinLosses(BaseModel):
     race: int
     wins: int
@@ -61,3 +68,26 @@ class Match(BaseModel):
     teams: list[MatchTeam]
     gateWay: int
     season: int
+
+    @property
+    def game_mode_str(self):
+        return gamemode_map.get(self.gameMode)
+
+    def get_oppos(self, battletag: str):
+        # gets the next team which doesn't h ave this player on it.
+        # to do, collect all teams for ffa games, etc.
+        oppo_team = next(
+            (
+            team for team in self.teams
+             if not any([p.battleTag == battletag for p in team.players])
+            ), None
+        )
+        return [p for p in oppo_team.players] if oppo_team else []
+
+    def describe(self, user_bt: str):
+        oppos = self.get_oppos(user_bt)
+        return (
+            f"Map: {self.map} Time elapsed: {(self.startTime.replace(tzinfo=None) - datetime.now()).seconds} seconds",
+            f"Oppo: { ', '.join(p.battleTag for p in oppos) }",
+            f"Game M0de: {self.game_mode_str}"
+        )

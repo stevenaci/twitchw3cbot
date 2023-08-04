@@ -19,6 +19,14 @@
             "program": "bot.py",
             "console": "integratedTerminal",
             "justMyCode": true
+        },
+        {
+            "name": "Gen Token",
+            "type": "python",
+            "request": "launch",
+            "program": "get_token.py",
+            "console": "integratedTerminal",
+            "justMyCode": true
         }
     ]
 }
