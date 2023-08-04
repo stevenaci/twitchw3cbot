@@ -4,4 +4,4 @@ and a Twitch bot implementation.
 
 Run the bot with bot.py.
 
-If you're missing a config file/keys, It will be generated for you, but really 
+If you're missing the 'twitch.ini' config file/required keys, It will be generated for you, but mostly you will probably dockerize this. Just be sure to include in the dockerfile to copy a 'twitch.ini' secrets file into the root of this project.
