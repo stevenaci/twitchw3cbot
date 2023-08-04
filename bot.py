@@ -10,7 +10,7 @@ class TwitchBot(commands.Bot, twitchio.Client):
     def __init__(self):
         super().__init__(
             prefix='?',
-            token=config['creds']['access_token']
+            token=config['credential']['access_token']
         )
         self.add_cog(WarcraftCog(bot=self))
         self.run()
