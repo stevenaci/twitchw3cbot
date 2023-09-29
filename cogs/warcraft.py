@@ -1,45 +1,45 @@
-from cogs.helpers import matches_channel, send_message
 from twitchio.ext import commands
-from w3c.players import players
+from w3c.players import Players
 
 class WarcraftCog(commands.Cog):
 
-    def __init__(self, bot: commands.Bot):
-
+    def __init__(self, bot: commands.Bot, players: Players):
         self.bot = bot
-        pass
+        self.players = players
 
     def is_server_channel(self, ctx: commands.Context):
-        return matches_channel(ctx, self.bot.nick)
+        return ctx.channel.name == self.bot.nick
 
     @commands.command()
     async def who(self, ctx: commands.Context):
+        """ Returns: Info for the player's current match"""
         words = ctx.message.content.split(" ")
         if (words[1] == "is" and words[2] == "oppo"):
-            await players.find_player_match(ctx)
+            await self.players.find_player_match(ctx)
 
     @commands.command()
     async def join(self, ctx: commands.Context):
+        """ Command to join the Clockwerk Network, 
+            or to change the player associated with your account.
+            If the message is sent
+        """
         if self.is_server_channel(ctx) or ctx.message.author.is_broadcaster:
-            fullname = ctx.message.content.split(" ")[1]
-            stats = await players.add_player(
-                ctx.message.author.name, fullname
-            )
-            if stats:
-                await send_message(ctx, f"{stats.battleTag} was assigned to channel {ctx.message.author.name}")
-            else:
-                cnt_find = "Couldn't find that player on w3c."
-                await send_message(ctx, cnt_find)
-
+            battletag = ctx.message.content.split(" ")[1]
+            try:
+                stats = await self.bot.players.add_player(ctx.message.author.name, battletag)
+                await ctx.channel.send(ctx, f"Battletag {battletag} was assigned to channel {ctx.message.author.name}")
+            except:
+                cnt_find = "Couldn't find that battletag on w3c network."
+                await ctx.channel.send(ctx, cnt_find)
 
     @commands.command()
     async def leave(self, ctx: commands.Context):
         if self.is_server_channel(ctx) or ctx.message.author.is_broadcaster:
-            if players.remove_player(ctx.author.name):
-                await send_message(ctx, f"{ctx.author.name}, your channel has been removed!")
+            if self.bot.players.remove_player(ctx.author.name):
+                await ctx.channel.send(ctx, f"{ctx.author.name}, your channel has been removed!")
             else:
-                await send_message(ctx, f"No player currently assigned to the channel: {ctx.author.name}")
+                await ctx.channel.send(ctx, f"No player currently assigned to the channel: {ctx.author.name}")
 
     @commands.command()
     async def player_status(self, ctx: commands.Context):
-        await ctx.channel.send(f"{players[ctx.channel.name]}")
+        await ctx.channel.send(f"{self.bot.players[ctx.channel.name]}")

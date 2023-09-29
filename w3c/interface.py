@@ -29,20 +29,17 @@ class WinLosses(BaseModel):
     games: int
     winrate: float
 
-
 class iPlayerAka(BaseModel):
     name: str
     main_race: str
     country: str
     liquipedia: str
 
-
 class PlayerStats(BaseModel):
     battleTag: str
     name: str
     participatedInSeasons: list
     winLosses: list[WinLosses]
-
 
 class MatchPlayer(BaseModel):
     race: Optional[int]
@@ -78,8 +75,8 @@ class Match(BaseModel):
         # to do, collect all teams for ffa games, etc.
         oppo_team = next(
             (
-            team for team in self.teams
-             if not any([p.battleTag == battletag for p in team.players])
+                team for team in self.teams
+                if not any([p.battleTag == battletag for p in team.players])
             ), None
         )
         return [p for p in oppo_team.players] if oppo_team else []

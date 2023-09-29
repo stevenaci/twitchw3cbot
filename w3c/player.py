@@ -2,7 +2,6 @@ from w3c.api import W3CApi
 from w3c.interface import Match, PlayerStats
 
 
-
 class Player():
 
     name: str
@@ -12,8 +11,6 @@ class Player():
         self.channel = channel
         self.name, self.id = [s.lower() for s in bnet.split("#")[0:2]]
         assert self.name and self.id
-        print(self.get_stats())
-        return
 
     @property
     def url_route(self)-> str:
