@@ -9,11 +9,10 @@ class TwitchBot(commands.Bot, twitchio.Client):
     players: Players
     def __init__(self):
         super().__init__(
-            prefix='?',
-            token=config['credential']['access_token']
+            prefix='?', token=config['credential']['access_token']
         )
         self.players = Players()
-        self.add_cog(WarcraftCog(self))
+        self.add_cog(WarcraftCog(self.nick), self.players)
         self.run()
 
     async def event_ready(self):
@@ -25,7 +24,10 @@ class TwitchBot(commands.Bot, twitchio.Client):
         )
 
     async def event_join(self, *args):
-        print(f"Joined server{args}")
+        print(f"Joined server {args}")
+
+    async def event_part(self, *args):
+        print(f"Part server {args}")
 
 if __name__ == '__main__':
     bot = TwitchBot()

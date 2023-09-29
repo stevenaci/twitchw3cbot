@@ -1,5 +1,5 @@
 import pytest
-from w3c.players import Players, Player
+from w3c.players import Players
 
 @pytest.fixture
 def players():
