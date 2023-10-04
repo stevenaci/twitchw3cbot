@@ -10,6 +10,8 @@ Afterwards, in your channel people can type !oppo to see who you are versing! Ty
 
 Startup: 
 
+create a file: twitch.ini for storing the bot's access token, Don't worry, on first running the application it will be generated for you.
+
 Visual Studio Code:
 Run the launch config called "Start Bot".
 
