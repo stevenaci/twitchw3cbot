@@ -2,7 +2,6 @@ from w3c.api import W3CApi
 from w3c.interface import Match, PlayerStats
 
 
-
 class Player():
 
     name: str
