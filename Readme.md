@@ -1,5 +1,5 @@
 A Twitch bot for Warcraft 3 streamers, 
-which tells your audience about your stats and current match on the w3c bttle platform!
+which tells your audience about your stats and current match on the w3c battle platform!
 
 Register with the bot by going to the bot's own channel and typing !join <Battlenet.id>
 
