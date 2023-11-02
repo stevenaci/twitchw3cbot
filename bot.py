@@ -12,7 +12,7 @@ class TwitchBot(commands.Bot, twitchio.Client):
             prefix='?', token=config['credential']['access_token']
         )
         self.players = Players()
-        self.add_cog(WarcraftCog(self.nick), self.players)
+        self.add_cog(WarcraftCog(self.nick, self.players))
         self.run()
 
     async def event_ready(self):

@@ -1,5 +1,5 @@
-from w3c.api import W3CApi
-from w3c.interface import Match, PlayerStats
+from w3c.w3c_service import W3CApi
+from w3c.w3c_interface import Match, PlayerStats
 
 
 class Player():
@@ -13,18 +13,25 @@ class Player():
         assert self.name and self.id
 
     @property
-    def url_route(self)-> str:
+    def w3c_url(self)-> str:
         return f"{self.name}%23{self.id}"
 
     def get_current_match(self) -> Match:
         try:
-            return W3CApi.get_current_match(self.url_route)
+            return W3CApi.get_current_match(self.w3c_url)
         except:
             return None
 
+    def describe_current_match(self) -> str:
+        match: Match = self.get_current_match(self)
+        if match:
+            match.describe(self.bnet)
+        else:
+            raise Exception() 
+
     def get_stats(self) -> PlayerStats:
         try:
-            return W3CApi.get_player_stats(self.url_route)
+            return W3CApi.get_player_stats(self.w3c_url)
         except:
             return None
 

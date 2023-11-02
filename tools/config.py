@@ -12,7 +12,8 @@ credential_section = ConfigSection(
         'access_token':'',
         'refresh_token':'',
         'client_id':'',
-        'client_secret':''
+        'client_secret':'',
+        'testing':True
         }
     )
 

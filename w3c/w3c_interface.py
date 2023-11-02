@@ -70,16 +70,17 @@ class Match(BaseModel):
     def game_mode(self):
         return gamemode_map.get(self.gameMode)
 
-    def opponents(self, battletag: str):
-        # gets the next team which doesn't h ave this player on it.
-        # to do, collect all teams for ffa games, etc.
-        oppo_team = next(
-            (
-                team for team in self.teams
-                if not any([p.battleTag == battletag for p in team.players])
-            ), None
-        )
-        return [p for p in oppo_team.players] if oppo_team else []
+    def opponents(self, battletag: str) -> list[MatchPlayer]:
+        # collect teams which doesn't have this player on it.
+        # collect players
+        opponent_teams = []
+        for team in self.teams:
+            if not any([p.battleTag == battletag for p in team.players]):
+                opponent_teams.append(team)
+
+        return sum([
+            team.players for team in opponent_teams
+        ], []) if opponent_teams else []
 
     def describe(self, user_bt: str):
         oppos = self.opponents(user_bt)

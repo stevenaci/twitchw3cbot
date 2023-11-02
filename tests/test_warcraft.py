@@ -1,5 +1,7 @@
 import pytest
 from w3c.players import Players
+from w3c.player import Player
+from w3c.w3c_service import W3CApi, Endpoints, PlayerStats, re
 
 @pytest.fixture
 def players():
