@@ -17,15 +17,17 @@ class Players(dict):
         if self.get(twitch_name):
             del self[twitch_name]
             self.save()
+            return True
+        return False
 
     async def find_player_match(self, ctx: commands.Context):
         if self.get(ctx.channel.name):
             player: Player = self[ctx.channel.name]
             match = player.get_current_match()
             if match:
-                await ctx.channel.send(ctx, match.describe(player.bnet))
+                await ctx.channel.send(match.describe(player.bnet))
             else:
-                await ctx.channel.send(ctx, "not currently in a match")
+                await ctx.channel.send("not currently in a match")
         else:
             print(f"No player registered for this channel: {ctx.channel.name}")
 
@@ -38,7 +40,7 @@ class Players(dict):
                 self[twitch_channel] = Player(twitch_channel, bnet_id)
 
     def save(self):
-        if self.testing:
-            return
+        # if self.testing:
+        #     return
         with open("players.save", "w") as f:
             f.writelines([f"{k}:{v.bnet}" for k, v in self.items()])

@@ -39,7 +39,8 @@ class W3CApi():
             return {}
 
     def get_player_stats(self, player_url: str):
-        return PlayerStats(**self.get_json(Endpoints.PLAYERS, player_url))
+        res = self.get_json(Endpoints.PLAYERS, player_url)
+        return PlayerStats(**res)
 
     def get_current_match(self, player_url: str):
         return  Match(**self.get_json(Endpoints.MATCHES_ONGOING, player_url))

@@ -1,6 +1,6 @@
 from w3c.w3c_service import W3CApi
 from w3c.w3c_interface import Match, PlayerStats
-
+import traceback
 
 class Player():
 
@@ -9,7 +9,7 @@ class Player():
     def __init__(self, channel, bnet: str):
         self.bnet = bnet
         self.channel = channel
-        self.name, self.id = [s.lower() for s in bnet.split("#")[0:2]]
+        self.name, self.id = [s for s in bnet.split("#")[0:2]]
         assert self.name and self.id
 
     @property
@@ -18,7 +18,7 @@ class Player():
 
     def get_current_match(self) -> Match:
         try:
-            return W3CApi.get_current_match(self.w3c_url)
+            return W3CApi().get_current_match(self.w3c_url)
         except:
             return None
 
@@ -31,7 +31,8 @@ class Player():
 
     def get_stats(self) -> PlayerStats:
         try:
-            return W3CApi.get_player_stats(self.w3c_url)
-        except:
+            return W3CApi().get_player_stats(self.w3c_url)
+        except Exception:
+            print(traceback.print_exc())
             return None
 
