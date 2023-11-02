@@ -1,7 +1,4 @@
 import requests as re
-from requests_mock import Mocker
-from tools.config import config
-from w3c.mock_data import test_match, test_player_stats
 from w3c.w3c_interface import Match, PlayerStats
 
 
