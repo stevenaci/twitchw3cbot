@@ -1,4 +1,4 @@
 class Environment():
-    isMock: bool = False
+    isTesting: bool = False
 
 environment = Environment()

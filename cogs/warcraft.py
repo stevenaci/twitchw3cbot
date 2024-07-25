@@ -1,4 +1,6 @@
 from twitchio.ext import commands
+from twitchio import Channel
+from tools.toon import ToonString
 from w3c.players import Players
 
 class WarcraftCog(commands.Cog):
@@ -16,11 +18,22 @@ class WarcraftCog(commands.Cog):
 
     def is_server_channel(self, ctx: commands.Context):
         return ctx.channel.name == self.server_channel
+    
+    async def sendToon(self, ctx: commands.Context, message: str):
+        await ctx.channel.send(ToonString(message))
 
+        
     @commands.command()
     async def oppo(self, ctx: commands.Context):
         """ Returns: Info for the player's current match"""
-        await self.players.find_player_match(ctx)
+        try:
+            match, player = self.players.find_player_match(ctx.author.name)
+            if match:
+                await self.sendToon(ctx, match.describe(player.bnet))
+            else:
+                await self.sendToon(ctx, "Not currently in a match")
+        except:
+            print(f"No player registered for this channel: {ctx.channel.name}")
 
     @commands.command()
     async def join(self, ctx: commands.Context):

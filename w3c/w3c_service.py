@@ -34,7 +34,7 @@ class W3CApi:
     def get_player_stats(self, player_url: str):
         return PlayerStats(**(
             self.get_json(Endpoints.PLAYERS, player_url)
-            if not environment.isMock
+            if not environment.isTesting
             else test_player_stats
         ))
 
@@ -42,7 +42,7 @@ class W3CApi:
         return Match(
             **(
                 self.get_json(Endpoints.MATCHES_ONGOING, player_url)
-                if not environment.isMock
+                if not environment.isTesting
                 else test_match
             )
         )

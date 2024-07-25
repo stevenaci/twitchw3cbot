@@ -1,9 +1,10 @@
 from twitchio.ext import commands
+from tools.environment import environment
 from w3c.player import Player
+from w3c.w3c_interface import Match
 
 class Players(dict):
     def __init__(self, testing = True, **config):
-        self.testing = testing
         self.load_players()
 
     async def add_player(self, twitch_name, battletag: str):
@@ -20,19 +21,15 @@ class Players(dict):
             return True
         return False
 
-    async def find_player_match(self, ctx: commands.Context):
-        if self.get(ctx.channel.name):
-            player: Player = self[ctx.channel.name]
-            match = player.get_current_match()
-            if match:
-                await ctx.channel.send(match.describe(player.bnet))
-            else:
-                await ctx.channel.send("not currently in a match")
-        else:
-            print(f"No player registered for this channel: {ctx.channel.name}")
+    async def find_player_match(self, channel_name) -> tuple[Match, Player]:
+        if self.get(channel_name):
+            player: Player = self[channel_name]
+            return player.get_current_match(), player
+        else: raise Exception("No player found.")
+
 
     def load_players(self):
-        if self.testing:
+        if environment.isTesting:
             return
         with open("players.save", "r") as f:
             for p in f.readlines():
@@ -40,7 +37,7 @@ class Players(dict):
                 self[twitch_channel] = Player(twitch_channel, bnet_id)
 
     def save(self):
-        # if self.testing:
-        #     return
+        if environment.isTesting:
+            return
         with open("players.save", "w") as f:
             f.writelines([f"{k}:{v.bnet}" for k, v in self.items()])

@@ -20,7 +20,7 @@ def bnet():
 
 @pytest.mark.asyncio
 async def test_add_remove_user(players: Players, twitch, bnet):
-    environment.isMock = True
+    environment.isTesting = True
 
     await players.add_player(twitch, bnet)
     assert players[twitch]
@@ -31,7 +31,7 @@ async def test_add_remove_user(players: Players, twitch, bnet):
 
 @pytest.mark.asyncio
 async def test_get_match(twitch, bnet):
-    environment.isMock = True
+    environment.isTesting = True
     
     player = Player(twitch, bnet)
     match = player.get_current_match()
