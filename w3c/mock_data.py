@@ -2,7 +2,7 @@
 test_player_stats = {
         "battleTag": "Freddy",
         "name": "David",
-        "participatedInSeasons": [],
+        "participatedInSeasons": [1,2,3],
         "winLosses": []
     }
 
@@ -15,5 +15,7 @@ test_match = {
         "gameMode": 1,
         "teams": [],
         "gateWay": 1,
-        "season": 15
+        "season": 15,
+        "startTime": 1231,
+        "endTime": 213213
     }

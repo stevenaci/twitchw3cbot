@@ -13,14 +13,12 @@ class Player():
         assert self.name and self.id
 
     @property
-    def w3c_url(self)-> str:
+    def url(self)-> str:
         return f"{self.name}%23{self.id}"
 
     def get_current_match(self) -> Match:
-        try:
-            return W3CApi().get_current_match(self.w3c_url)
-        except:
-            return None
+        return W3CApi().get_current_match(self.url)
+
 
     def describe_current_match(self) -> str:
         match: Match = self.get_current_match(self)
@@ -31,7 +29,7 @@ class Player():
 
     def get_stats(self) -> PlayerStats:
         try:
-            return W3CApi().get_player_stats(self.w3c_url)
+            return W3CApi().get_player_stats(self.url)
         except Exception:
             print(traceback.print_exc())
             return None

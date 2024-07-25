@@ -15,11 +15,9 @@ class WarcraftCog(commands.Cog):
         return ctx.channel.name == self.server_channel
 
     @commands.command()
-    async def who(self, ctx: commands.Context):
+    async def oppo(self, ctx: commands.Context):
         """ Returns: Info for the player's current match"""
-        words = ctx.message.content.split(" ")
-        if (words[1] == "is" and words[2] == "oppo"):
-            await self.players.find_player_match(ctx)
+        await self.players.find_player_match(ctx)
 
     @commands.command()
     async def join(self, ctx: commands.Context):
@@ -34,9 +32,9 @@ class WarcraftCog(commands.Cog):
                 await ctx.channel.send("Specify A BattleTag :OVVVO:!")
                 return
             try:
-                stats = await self.players.add_player(ctx.message.author.name, battletag)
-                await self.bot.join_channels([ctx.message.author.name])
+                await self.players.add_player(ctx.message.author.name, battletag)
                 await ctx.channel.send(f"Battletag {battletag} was assigned to channel {ctx.message.author.name}")
+                await self.bot.join_channels([ctx.message.author.name])
             except:
                 await ctx.channel.send("Couldn't find that battletag on w3c network.")
 

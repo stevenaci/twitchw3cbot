@@ -13,15 +13,9 @@ from pydantic import BaseModel
 'gateWay': 10, 'season': 0}
 https://statistic-service.w3champions.com/api/players/Minigun%2311620/winrate?season=2
 """
-gateway_map = {10:'America', 20: 'Europe'}
-gamemode_map = {1: '1v1', 2:'2v2', 3:'3v3', 4:'4v4'}
-race_map = {
-    1:"Hu",
-    2:"Or",
-    8:"Ud",
-    4:"Ne",
-    0:"Rd"
-}
+gateway_map = { 10:'America', 20: 'Europe' }
+gamemode_map = { 1: '1v1', 2:'2v2', 3:'3v3', 4:'4v4' }
+race_map = { 1: 'Hu', 2: 'Or', 8: 'Ud', 4: 'Ne', 0: 'Rd' }
 class WinLosses(BaseModel):
     race: int
     wins: int
