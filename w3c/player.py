@@ -17,7 +17,10 @@ class Player():
         return f"{self.name}%23{self.id}"
 
     def get_current_match(self) -> Match:
-        return W3CApi().get_current_match(self.url)
+        try:
+            return W3CApi().get_current_match(self.url)
+        except:
+            return None
 
 
     def describe_current_match(self) -> str:
@@ -25,7 +28,7 @@ class Player():
         if match:
             match.describe(self.bnet)
         else:
-            raise Exception() 
+            raise Exception()
 
     def get_stats(self) -> PlayerStats:
         try:

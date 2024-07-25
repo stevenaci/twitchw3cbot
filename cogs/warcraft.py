@@ -6,10 +6,13 @@ class WarcraftCog(commands.Cog):
     server_channel: str
     players: Players
 
-    def __init__(self, server_channel: str, players: Players, bot: commands.bot):
-        self.server_channel = server_channel
+    def __init__(self, players: Players, bot: commands.bot):
         self.players = players
         self.bot = bot
+    
+    def set_server_channel(self, channel: str):
+        print(f"Setting Clockwerk Server as channel: {channel}")
+        self.server_channel =  channel
 
     def is_server_channel(self, ctx: commands.Context):
         return ctx.channel.name == self.server_channel
@@ -34,7 +37,8 @@ class WarcraftCog(commands.Cog):
             try:
                 await self.players.add_player(ctx.message.author.name, battletag)
                 await ctx.channel.send(f"Battletag {battletag} was assigned to channel {ctx.message.author.name}")
-                await self.bot.join_channels([ctx.message.author.name])
+                if self.players.get(ctx.message.author.name):
+                    await self.bot.join_channels([ctx.message.author.name])
             except:
                 await ctx.channel.send("Couldn't find that battletag on w3c network.")
 
