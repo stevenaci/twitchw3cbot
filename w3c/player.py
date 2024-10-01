@@ -15,18 +15,9 @@ class Player():
     def url(self)-> str:
         return f"{self.name}%23{self.id}"
 
-    def get_current_match(self) -> Match:
-        try:
-            return W3CApi().get_current_match(self.url)
-        except Exception as e:
-            print(e)
-            return None
+    def get_current_match(self) -> Match: return W3CApi().get_current_match(self.url)
 
 
-    def get_stats(self) -> PlayerStats:
-        try:
-            return W3CApi().get_player_stats(self.url)
-        except Exception:
-            print(traceback.print_exc())
-            return None
+    def get_stats(self) -> PlayerStats: return W3CApi().get_player_stats(self.url)
+
 

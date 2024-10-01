@@ -1,6 +1,7 @@
 from twitchio.ext import commands
 from twitchio import Channel
 from tools.toon import ToonString
+from tools.error import catch_all_exceptions
 from w3c.players import Players
 
 class WarcraftCog(commands.Cog):
@@ -22,8 +23,8 @@ class WarcraftCog(commands.Cog):
     async def sendToon(self, ctx: commands.Context, message: str):
         await ctx.channel.send(ToonString(message))
 
-        
     @commands.command()
+    @catch_all_exceptions
     async def oppo(self, ctx: commands.Context):
         """ Returns: Info for the player's current match"""
         match = await self.players.find_player_match(ctx.author.name)
@@ -34,6 +35,7 @@ class WarcraftCog(commands.Cog):
 
 
     @commands.command()
+    @catch_all_exceptions
     async def join(self, ctx: commands.Context):
         """ Command to join the Clockwerk Network, 
             or to change the player associated with your account.
@@ -43,17 +45,18 @@ class WarcraftCog(commands.Cog):
             try:
                 battletag = ctx.message.content.split(" ")[1]
             except:
-                await ctx.channel.send("Specify A BattleTag :OVVVO:!")
+                await self.sendToon(ctx, "Specify A BattleTag :OVVVO:!")
                 return
             try:
                 await self.players.add_player(ctx.message.author.name, battletag)
-                await ctx.channel.send(f"Battletag {battletag} was assigned to channel {ctx.message.author.name}")
+                await self.sendToon(ctx, f"Battletag {battletag} was assigned to channel {ctx.message.author.name}")
                 if self.players.get(ctx.message.author.name):
                     await self.bot.join_channels([ctx.message.author.name])
             except:
-                await ctx.channel.send("Couldn't find that battletag on w3c network.")
+                await self.sendToon(ctx, "Couldn't find that battletag on w3c network.")
 
     @commands.command()
+    @catch_all_exceptions
     async def leave(self, ctx: commands.Context):
         if self.is_server_channel(ctx) or ctx.message.author.is_broadcaster:
             if self.players.remove_player(ctx.author.name):
@@ -63,5 +66,6 @@ class WarcraftCog(commands.Cog):
                 await ctx.channel.send(f"No player currently assigned to the channel: {ctx.author.name}")
 
     @commands.command()
+    @catch_all_exceptions
     async def player_status(self, ctx: commands.Context):
         await ctx.channel.send(f"{self.players[ctx.channel.name]}")

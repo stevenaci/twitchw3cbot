@@ -26,10 +26,7 @@ class W3CApi:
     server = W3CServer()
 
     def get_json(self, endpoint: str, player: str):
-        try:
-            return re.get(self.server.full_url(endpoint + player)).json()
-        except:
-            return {}
+        return re.get(self.server.full_url(endpoint + player)).json()
 
     def get_player_stats(self, player_url: str):
         return PlayerStats(**(

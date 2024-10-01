@@ -14,6 +14,7 @@ class Players(dict):
         self[twitch_name] = player
         self.save()
 
+
     def remove_player(self, twitch_name):
         if self.get(twitch_name):
             del self[twitch_name]
@@ -24,7 +25,9 @@ class Players(dict):
     async def find_player_match(self, channel_name) -> Match:
         if self.get(channel_name):
             player: Player = self[channel_name]
+
             return player.get_current_match()
+
         else: return None
 
     def load_players(self):
