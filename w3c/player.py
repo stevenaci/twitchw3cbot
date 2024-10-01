@@ -6,9 +6,8 @@ class Player():
 
     name: str
 
-    def __init__(self, channel, bnet: str):
+    def __init__(self, bnet: str):
         self.bnet = bnet
-        self.channel = channel
         self.name, self.id = [s for s in bnet.split("#")[0:2]]
         assert self.name and self.id
 
@@ -22,13 +21,6 @@ class Player():
         except:
             return None
 
-
-    def describe_current_match(self) -> str:
-        match: Match = self.get_current_match(self)
-        if match:
-            match.describe(self.bnet)
-        else:
-            raise Exception()
 
     def get_stats(self) -> PlayerStats:
         try:

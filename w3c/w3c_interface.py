@@ -37,7 +37,7 @@ class PlayerStats(BaseModel):
 
 class MatchPlayer(BaseModel):
     race: Optional[int]
-    oldMmr: Optional[int]
+    oldMmr: int
     currentMmr: int
     battleTag: str
     name: str
@@ -45,12 +45,17 @@ class MatchPlayer(BaseModel):
     won: bool
     location: str
     country: Optional[str]
+    def describe(self) -> str:
+        return f"{self.battleTag}- MMR: {self.oldMmr}-{race_map[self.race]}"
 
 class MatchTeam(BaseModel):
     players: list[MatchPlayer]
+    def describe(self) -> str:
+        return "".join([p.describe() for p in self.players])
 
 class Match(BaseModel):
     map: str
+    mapName: str
     id: str
     durationInSeconds: int
     startTime: datetime
@@ -65,21 +70,19 @@ class Match(BaseModel):
         return gamemode_map.get(self.gameMode)
 
     def opponents(self, battletag: str) -> list[MatchPlayer]:
-        # collect teams which doesn't have this player on it.
-        # collect players
+        # collect teams which don't have this player on it.
         opponent_teams = []
         for team in self.teams:
             if not any([p.battleTag == battletag for p in team.players]):
                 opponent_teams.append(team)
-
         return sum([
             team.players for team in opponent_teams
         ], []) if opponent_teams else []
 
-    def describe(self, user_bt: str):
-        oppos = self.opponents(user_bt)
+    def describe(self):
+        print(self.teams)
         return (
-            f"Map: {self.map} Time elapsed: {(self.startTime.replace(tzinfo=None) - datetime.now()).seconds} seconds",
-            f"Oppo: { ', '.join(p.battleTag for p in oppos) }",
-            f"Game M0de: {self.game_mode}"
+            "\n".join([team.describe() for team in self.teams]) +
+            f"\nMap: {self.mapName}\nTime elapsed: {(self.startTime.replace(tzinfo=None) - datetime.now())} " +
+            f"\nGame M0de: {self.game_mode}"
         )

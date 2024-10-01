@@ -8,7 +8,7 @@ class Players(dict):
         self.load_players()
 
     async def add_player(self, twitch_name, battletag: str):
-        player = Player(twitch_name, battletag)
+        player = Player(battletag)
         stats = player.get_stats()
         assert stats
         self[twitch_name] = player
@@ -21,12 +21,11 @@ class Players(dict):
             return True
         return False
 
-    async def find_player_match(self, channel_name) -> tuple[Match, Player]:
+    async def find_player_match(self, channel_name) -> Match:
         if self.get(channel_name):
             player: Player = self[channel_name]
-            return player.get_current_match(), player
-        else: raise Exception("No player found.")
-
+            return player.get_current_match()
+        else: return None
 
     def load_players(self):
         if environment.isTesting:

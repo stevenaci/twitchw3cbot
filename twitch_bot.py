@@ -1,6 +1,6 @@
 import twitchio
 from twitchio.ext import commands
-from cogs.warcraft import WarcraftCog
+from cogs.warcraft_cog import WarcraftCog
 from tools.config import config
 from w3c.players import Players
 

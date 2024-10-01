@@ -26,14 +26,12 @@ class WarcraftCog(commands.Cog):
     @commands.command()
     async def oppo(self, ctx: commands.Context):
         """ Returns: Info for the player's current match"""
-        try:
-            match, player = self.players.find_player_match(ctx.author.name)
-            if match:
-                await self.sendToon(ctx, match.describe(player.bnet))
-            else:
-                await self.sendToon(ctx, "Not currently in a match")
-        except:
-            print(f"No player registered for this channel: {ctx.channel.name}")
+        match = await self.players.find_player_match(ctx.author.name)
+        if match:
+            await self.sendToon(ctx, match.describe())
+        else:
+            await self.sendToon(ctx, "Player is not in a ladder match")
+
 
     @commands.command()
     async def join(self, ctx: commands.Context):
