@@ -33,7 +33,7 @@ class Players(dict):
         with open("players.save", "r") as f:
             for p in f.readlines():
                 twitch_channel, bnet_id = p.split(":")
-                self[twitch_channel] = Player(twitch_channel, bnet_id)
+                self[twitch_channel] = Player(bnet_id)
 
     def save(self):
         if environment.isTesting:
