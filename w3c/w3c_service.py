@@ -39,10 +39,8 @@ class W3CApi:
         ))
 
     def get_current_match(self, player_url: str):
-        return Match(
-            **(
+        return Match(**(
                 self.get_json(Endpoints.MATCHES_ONGOING, player_url)
                 if not environment.isTesting
                 else test_match
-            )
-        )
+            ))

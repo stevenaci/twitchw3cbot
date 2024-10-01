@@ -8,14 +8,13 @@ test_player_stats = {
 
 test_match = {
         "map": "LR",
+        "mapName": "Last Refuge",
         "id": "38D",
         "durationInSeconds": 334,
-        "startTime": None,
-        "endTime": None,
+        "startTime": 1231,
+        "endTime": 213213,
         "gameMode": 1,
         "teams": [],
         "gateWay": 1,
         "season": 15,
-        "startTime": 1231,
-        "endTime": 213213
     }

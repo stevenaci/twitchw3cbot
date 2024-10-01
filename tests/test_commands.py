@@ -30,9 +30,9 @@ async def test_add_remove_user(players: Players, twitch, bnet):
     assert not players.get(twitch)
 
 @pytest.mark.asyncio
-async def test_get_match(twitch, bnet):
+async def test_get_match(bnet):
     environment.isTesting = True
     
-    player = Player(twitch, bnet)
+    player = Player(bnet)
     match = player.get_current_match()
     assert type(match) is Match

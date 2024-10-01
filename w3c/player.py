@@ -18,7 +18,8 @@ class Player():
     def get_current_match(self) -> Match:
         try:
             return W3CApi().get_current_match(self.url)
-        except:
+        except Exception as e:
+            print(e)
             return None
 
 
