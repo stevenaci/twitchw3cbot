@@ -28,7 +28,7 @@ class Players(dict):
 
             return player.get_current_match()
 
-        else: return None
+        else: raise Exception()
 
     def load_players(self):
         if environment.isTesting:

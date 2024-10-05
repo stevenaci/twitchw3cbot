@@ -26,7 +26,10 @@ class W3CApi:
     server = W3CServer()
 
     def get_json(self, endpoint: str, player: str):
-        return re.get(self.server.full_url(endpoint + player)).json()
+        res = re.get(self.server.full_url(endpoint + player))
+        if res.status_code == 200:
+            return res.json()
+        return {}
 
     def get_player_stats(self, player_url: str):
         return PlayerStats(**(
@@ -36,8 +39,9 @@ class W3CApi:
         ))
 
     def get_current_match(self, player_url: str):
-        return Match(**(
+        m = Match(**(
                 self.get_json(Endpoints.MATCHES_ONGOING, player_url)
                 if not environment.isTesting
                 else test_match
             ))
+        return m

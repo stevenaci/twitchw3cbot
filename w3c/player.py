@@ -17,7 +17,6 @@ class Player():
 
     def get_current_match(self) -> Match: return W3CApi().get_current_match(self.url)
 
-
     def get_stats(self) -> PlayerStats: return W3CApi().get_player_stats(self.url)
 
 

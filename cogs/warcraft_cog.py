@@ -24,18 +24,16 @@ class WarcraftCog(commands.Cog):
         await ctx.channel.send(ToonString(message))
 
     @commands.command()
-    @catch_all_exceptions
     async def oppo(self, ctx: commands.Context):
         """ Returns: Info for the player's current match"""
-        match = await self.players.find_player_match(ctx.author.name)
-        if match:
+        try:
+            match = await self.players.find_player_match(ctx.author.name)
             await self.sendToon(ctx, match.describe())
-        else:
+        except Exception as e: # Match wasn't found or something else bad happened.
+            print(e)
             await self.sendToon(ctx, "Player is not in a ladder match")
 
-
     @commands.command()
-    @catch_all_exceptions
     async def join(self, ctx: commands.Context):
         """ Command to join the Clockwerk Network, 
             or to change the player associated with your account.
@@ -56,16 +54,14 @@ class WarcraftCog(commands.Cog):
                 await self.sendToon(ctx, "Couldn't find that battletag on w3c network.")
 
     @commands.command()
-    @catch_all_exceptions
     async def leave(self, ctx: commands.Context):
         if self.is_server_channel(ctx) or ctx.message.author.is_broadcaster:
             if self.players.remove_player(ctx.author.name):
                 await ctx.channel.send(f" {ctx.author.name}, your channel has been removed!")
-                self.bot.part_channels([ctx.author.name])
+                await self.bot.part_channels([ctx.author.name])
             else:
                 await ctx.channel.send(f"No player currently assigned to the channel: {ctx.author.name}")
 
     @commands.command()
-    @catch_all_exceptions
     async def player_status(self, ctx: commands.Context):
         await ctx.channel.send(f"{self.players[ctx.channel.name]}")

@@ -16,7 +16,7 @@
             "name": "Start App",
             "type": "python",
             "request": "launch",
-            "program": "bot.py",
+            "program": "twitch_bot.py",
             "console": "integratedTerminal",
             "justMyCode": true
         },
